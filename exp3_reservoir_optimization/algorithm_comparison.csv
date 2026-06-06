@@ -1,0 +1,3 @@
+algorithm,revenue,deficit,success
+HiGHS LP,43905.77777777778,0.0,True
+Heuristic clip,37747.200000000004,0.0,True

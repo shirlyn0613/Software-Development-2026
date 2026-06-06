@@ -1,0 +1,6 @@
+# Alert Log Format
+# [YYYY-MM-DD HH:MM:SS] City | Rainfall: XX.XX mm/h | Level: Heavy - ALERT
+#
+# Notes:
+# - Only red alerts are appended here.
+# - Each line records the timestamp, city name, rainfall value, and alert level.

@@ -1,0 +1,9 @@
+Experiment 3 validation report
+Success: True
+Optimizer message: Optimization terminated successfully. (HiGHS Status 7: Optimal)
+Total revenue (proxy): 43905.78
+Ecological deficit: 0.0000
+Minimum storage: 100000.00
+Maximum storage: 1000000.00
+
+All constraints satisfied.
