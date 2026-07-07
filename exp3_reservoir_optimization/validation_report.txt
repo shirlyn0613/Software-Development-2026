@@ -1,9 +1,13 @@
-Experiment 3 validation report
-Success: True
-Optimizer message: Optimization terminated successfully. (HiGHS Status 7: Optimal)
-Total revenue (proxy): 43905.78
-Ecological deficit: 0.0000
-Minimum storage: 100000.00
-Maximum storage: 1000000.00
+======================================================================
+RESERVOIR OPTIMIZATION VALIDATION REPORT
+======================================================================
 
-All constraints satisfied.
+[PASS] Storage lower bound: Min storage 100,000 m3 on Day 6
+[PASS] Storage upper bound: Max storage 1,000,000 m3 on Day 2
+[PASS] Ecological release: All releases >= 10.0 m3/s
+[PASS] Maximum release: All releases <= 100.0 m3/s
+[PASS] Mass balance: Max absolute error 0.000 m3
+[PASS] Revenue calculation: CSV total 43905.78; recalculated 43905.78
+======================================================================
+6/6 checks passed | Total Revenue: $43,905.78
+======================================================================

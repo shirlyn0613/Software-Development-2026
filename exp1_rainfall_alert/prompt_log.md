@@ -110,3 +110,65 @@ answer 1
 > - Default selector: China -> Beijing -> Beijing
 > - Added optional comparison cities for multi-city monitoring
 > - Kept history, prediction, alert log, email/SMS hooks, and Folium map visualization
+
+## Part 6: Project Quality Supplements
+
+**prompt 1**
+
+> Supplement the project according to teacher feedback: add test scripts, verification reports, and unified dependency management.
+
+**answer 1**
+
+> Added project quality files:
+>
+> - `requirements.txt` for unified dependency management
+> - `run_tests.py` as a simple local test runner
+> - `tests/test_weather_monitor.py` for offline unit tests
+> - `tests/README.md` as the test guide
+> - `reports/verification_report.md` as the verification report
+>
+> Updated `README.md` with project structure, Quick Run, test instructions, and verification report location.
+>
+> Test result: 8 tests passed.
+
+## Part 7: Logic and UI Separation
+
+**prompt 1**
+
+> Separate code logic: `weather_monitor.py` should handle core weather data fetching, prediction, and monitoring, while another file should handle the web dashboard. The monitor should avoid a fixed city tree and extract country, province/state, and city information from API data.
+
+**answer 1**
+
+> Refactored the project:
+>
+> - `weather_monitor.py` now contains only core logic: weather API access, geocoding API access, API-derived city tree construction, alert thresholds, prediction, logs, and notifications.
+> - `dashboard_app.py` now contains the Streamlit dashboard UI, Folium map, city cards, controls, and tabs.
+> - The city tree is now built from OpenWeather Geocoding API fields: `country`, `state`, `name`, `lat`, and `lon`.
+> - Updated tests for geocoding, city-tree construction, location-based weather fetching, and core monitoring logic.
+>
+> Test result: 10 tests passed.
+
+## Part 8: Reference-Based Reset
+
+**prompt 1**
+
+> Use the provided reference files from the repository as a guide, not a direct copy. Rebuild the core implementation and tests, especially alert-log tests.
+
+**answer 1**
+
+> Reset the project toward the reference structure:
+>
+> - `weather_monitor.py`: OpenWeatherMap API fetch and normalization.
+> - `weather_alert.py`: threshold classification and alert logging.
+> - `weather_dashboard.py`: Streamlit dashboard.
+> - `dashboard_app.py`: compatibility wrapper for the dashboard.
+> - `tests/test_weather_monitor.py`: offline tests for API parsing, thresholds, and alert logging.
+>
+> The alert-log tests now verify:
+>
+> - Green readings are not logged.
+> - Yellow readings are logged.
+> - Red readings are logged.
+> - A test-generated Red record is appended to `alert_log.txt` with `[DEBUG]`.
+>
+> Test result: 8 tests passed.

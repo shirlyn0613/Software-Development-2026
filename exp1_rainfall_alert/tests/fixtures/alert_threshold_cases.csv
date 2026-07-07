@@ -1,0 +1,9 @@
+rainfall,expected_level,expected_color
+0.0,Green,green
+2.5,Green,green
+9.99,Green,green
+10.0,Yellow,yellow
+15.0,Yellow,yellow
+19.99,Yellow,yellow
+20.0,Red,red
+35.5,Red,red

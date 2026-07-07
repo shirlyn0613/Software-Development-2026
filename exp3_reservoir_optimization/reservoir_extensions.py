@@ -39,6 +39,26 @@ class StochasticSummary:
     deficit_mean: float
 
 
+def _safe_to_csv(df: pd.DataFrame, path: Path) -> Path:
+    try:
+        df.to_csv(path, index=False)
+        return path
+    except PermissionError:
+        latest = path.with_name(f"{path.stem}_latest{path.suffix}")
+        df.to_csv(latest, index=False)
+        return latest
+
+
+def _safe_savefig(fig: plt.Figure, path: Path, dpi: int = 200) -> Path:
+    try:
+        fig.savefig(path, dpi=dpi)
+        return path
+    except PermissionError:
+        latest = path.with_name(f"{path.stem}_latest{path.suffix}")
+        fig.savefig(latest, dpi=dpi)
+        return latest
+
+
 def generate_inflow_scenarios(
     base_inflows: np.ndarray = INFLOWS,
     sigma: float = 0.15,
@@ -162,7 +182,7 @@ def compare_algorithms(output_path: Path) -> pd.DataFrame:
             },
         ]
     )
-    lbfgs_like.to_csv(output_path, index=False)
+    _safe_to_csv(lbfgs_like, output_path)
     return lbfgs_like
 
 
@@ -174,7 +194,7 @@ def build_extension_report(root: Path) -> dict[str, Path]:
     base = optimize_schedule()
     robustness = evaluate_robust_schedule(base.releases, scenarios)
     robustness_path = root / "robustness_analysis.csv"
-    robustness.to_csv(robustness_path, index=False)
+    robustness_path = _safe_to_csv(robustness, robustness_path)
     outputs["robustness_analysis.csv"] = robustness_path
 
     summary = pd.DataFrame(
@@ -189,21 +209,23 @@ def build_extension_report(root: Path) -> dict[str, Path]:
         ]
     )
     summary_path = root / "stochastic_summary.csv"
-    summary.to_csv(summary_path, index=False)
+    summary_path = _safe_to_csv(summary, summary_path)
     outputs["stochastic_summary.csv"] = summary_path
 
     rolling = rolling_horizon_optimization()
     rolling_path = root / "rolling_horizon_schedule.csv"
-    rolling.to_csv(rolling_path, index=False)
+    rolling_path = _safe_to_csv(rolling, rolling_path)
     outputs["rolling_horizon_schedule.csv"] = rolling_path
 
     quality = water_quality_proxy(base.releases)
     quality_path = root / "water_quality_proxy.csv"
-    quality.to_csv(quality_path, index=False)
+    quality_path = _safe_to_csv(quality, quality_path)
     outputs["water_quality_proxy.csv"] = quality_path
 
     algo_path = root / "algorithm_comparison.csv"
     compare_algorithms(algo_path)
+    if not algo_path.exists():
+        algo_path = algo_path.with_name("algorithm_comparison_latest.csv")
     outputs["algorithm_comparison.csv"] = algo_path
 
     fig, ax = plt.subplots(figsize=(7, 4))
@@ -212,9 +234,9 @@ def build_extension_report(root: Path) -> dict[str, Path]:
     ax.set_xlabel("Terminal storage (m3)")
     ax.set_ylabel("Count")
     fig.tight_layout()
-    fig.savefig(root / "uncertainty_histogram.png", dpi=200)
+    histogram_path = _safe_savefig(fig, root / "uncertainty_histogram.png", dpi=200)
     plt.close(fig)
-    outputs["uncertainty_histogram.png"] = root / "uncertainty_histogram.png"
+    outputs["uncertainty_histogram.png"] = histogram_path
 
     return outputs
 

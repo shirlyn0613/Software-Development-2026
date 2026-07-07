@@ -207,7 +207,10 @@ def plot_tradeoff(output_path: Path) -> pd.DataFrame:
         )
 
     fig.tight_layout()
-    fig.savefig(output_path, dpi=200)
+    try:
+        fig.savefig(output_path, dpi=200)
+    except PermissionError:
+        fig.savefig(output_path.with_name(f"{output_path.stem}_latest{output_path.suffix}"), dpi=200)
     plt.close(fig)
     return df
 
@@ -252,12 +255,23 @@ def main() -> None:
 
     main_result = optimize_schedule()
     schedule = build_schedule_table(main_result)
-    schedule.to_csv(root / "optimal_schedule.csv", index=False)
+    schedule_path = root / "optimal_schedule.csv"
+    try:
+        schedule.to_csv(schedule_path, index=False)
+    except PermissionError:
+        schedule_path = root / "optimal_schedule_latest.csv"
+        schedule.to_csv(schedule_path, index=False)
 
-    write_validation_report(root / "validation_report.txt", main_result)
+    try:
+        write_validation_report(root / "validation_report.txt", main_result)
+    except PermissionError:
+        write_validation_report(root / "validation_report_latest.txt", main_result)
 
     tradeoff_df = plot_tradeoff(root / "tradeoff_analysis.png")
-    tradeoff_df.to_csv(root / "tradeoff_frontier.csv", index=False)
+    try:
+        tradeoff_df.to_csv(root / "tradeoff_frontier.csv", index=False)
+    except PermissionError:
+        tradeoff_df.to_csv(root / "tradeoff_frontier_latest.csv", index=False)
 
     print("Optimized schedule:")
     print(schedule[["day", "release_m3_s", "storage_end_m3"]].to_string(index=False))

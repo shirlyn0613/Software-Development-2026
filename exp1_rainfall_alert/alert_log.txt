@@ -1,6 +1,12 @@
 # Alert Log Format
-# [YYYY-MM-DD HH:MM:SS] City | Rainfall: XX.XX mm/h | Level: Heavy - ALERT
+# [YYYY-MM-DD HH:MM:SS] | City: {city} | Rainfall: {rainfall} mm/h | Level: Red
+# [YYYY-MM-DD HH:MM:SS] [DEBUG] | City: {city} | Rainfall: {rainfall} mm/h | Level: Red
 #
 # Notes:
-# - Only red alerts are appended here.
-# - Each line records the timestamp, city name, rainfall value, and alert level.
+# - Yellow and Red alerts are appended here.
+# - Green/Normal readings are not logged.
+# - [DEBUG] marks test-generated alert records and should not be treated as real events.
+[2026-07-07 12:21:28] [DEBUG] | City: DebugTestCity | Rainfall: 28.8 mm/h | Level: Red
+[2026-07-07 12:24:02] [DEBUG] | City: DebugTestCity | Rainfall: 28.8 mm/h | Level: Red
+[2026-07-07 12:28:43] [DEBUG] | City: DebugTestCity | Rainfall: 28.8 mm/h | Level: Red
+[2026-07-07 22:33:16] [DEBUG] | City: DebugTestCity | Rainfall: 28.8 mm/h | Level: Red

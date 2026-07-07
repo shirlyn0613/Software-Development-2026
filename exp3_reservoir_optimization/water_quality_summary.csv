@@ -1,0 +1,4 @@
+scenario,revenue,max_concentration,violations
+A: Baseline,43905.77777777778,438.80000000000075,2
+B: Hard Constraint,48705.77777777778,361.04000000000065,2
+C: Soft Penalty,45218.73777777778,100.0,4

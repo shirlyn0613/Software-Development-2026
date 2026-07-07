@@ -1,100 +1,56 @@
-# Rainfall Alert System
+# Rainfall Forecasting & Alert System
 
-A Streamlit-based rainfall monitoring app for the **Short-term Rainfall Forecasting & Alert System** lab.
+Experiment 1 rainfall monitoring project using OpenWeatherMap and Streamlit.
 
-## What It Does
+## Alert Rules
 
-- Fetches current weather data from OpenWeatherMap
-- Extracts rainfall intensity
-- Classifies rainfall into:
-  - Green: `< 10 mm/h`
-  - Yellow: `10-20 mm/h`
-  - Red: `>= 20 mm/h`
-- Logs red alerts with timestamps
-- Shows a live dashboard with:
-  - current rainfall metric
-  - color-coded alert status
-  - country / province-region / city selector
-  - multi-city comparison cards
-  - rainfall trend forecast
-  - map-first view with Folium
-  - optional email/SMS hooks
+| Level | Threshold | Behavior |
+|---|---:|---|
+| Green | `< 10 mm/h` | Normal, no log |
+| Yellow | `10 <= rainfall < 20 mm/h` | Warning, append to `alert_log.txt` |
+| Red | `>= 20 mm/h` | Heavy alert, append to `alert_log.txt` |
 
-## Main Files
+## Files
 
-- `weather_monitor.py` - main Streamlit app
-- `alert_log.txt` - red alert records
-- `prompt_log.md` - AI interaction log for the lab
-- `Experiment1_Rainfall_Alert.docx` - lab handout
+| File | Role |
+|---|---|
+| `weather_monitor.py` | Fetch and normalize OpenWeatherMap current weather data |
+| `weather_alert.py` | Classify rainfall thresholds and write alert logs |
+| `weather_dashboard.py` | Streamlit dashboard for multi-city monitoring |
+| `dashboard_app.py` | Compatibility wrapper that launches `weather_dashboard.py` |
+| `alert_log.txt` | Timestamped Yellow/Red alert records |
+| `tests/test_weather_monitor.py` | Offline tests for API parsing, thresholds, and logging |
+| `tests/fixtures/alert_threshold_cases.csv` | Editable rainfall threshold test data |
+| `reports/verification_report.md` | Verification report |
+| `prompt_log.md` | AI interaction record |
 
-## Requirements
-
-- Python 3.10+
-- `requests`
-- `pandas`
-- `streamlit`
-- `folium`
-- optional: `streamlit-autorefresh`
-- optional: `twilio`
-
-## Setup
-
-Create and activate the conda environment:
+## Quick Run
 
 ```powershell
 conda activate lab
+pip install -r requirements.txt
+streamlit run weather_dashboard.py
 ```
 
-Install packages:
+Enter your OpenWeatherMap API key and comma-separated city names in the sidebar.
+
+## Run Tests
 
 ```powershell
-pip install requests pandas streamlit folium streamlit-autorefresh twilio
+conda activate lab
+python run_tests.py
 ```
 
-## Run
+The tests mock OpenWeatherMap responses, so they do not require a real API key.
 
-Start the dashboard:
+One test intentionally appends a `[DEBUG]` Red alert record to `alert_log.txt` to prove that Red logging works without mixing test data with real alert data.
 
-```powershell
-streamlit run weather_monitor.py
-```
+## Test Focus
 
-Then enter:
-
-- your OpenWeatherMap API key
-- a location using the country -> province/region -> city selector
-- optional comparison cities
-
-Default location:
-
-- Country: China
-- Province / Region: Beijing
-- City: Beijing
-
-Example comparison cities:
-
-- Shanghai
-- Guangzhou
-- Shenzhen
-- Wuhan
-
-## Optional Alerts
-
-The app includes optional notification inputs for:
-
-- Email alerts via SMTP
-- SMS alerts via Twilio
-
-These are optional and only work if you provide valid credentials.
-
-## Output
-
-The app may create or update:
-
-- `alert_log.txt`
-
-## Notes
-
-- The forecast panel is trend-based and meant for lab demonstration.
-- The map view depends on returned city coordinates.
-- If the autorefresh package is missing, you can still refresh manually.
+- API response parsing
+- 1-hour and 3-hour rainfall extraction
+- HTTP error handling
+- Green / Yellow / Red threshold boundaries
+- Green records are not logged
+- Yellow and Red records are logged
+- Red test records include `[DEBUG]`

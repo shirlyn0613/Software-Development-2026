@@ -1,0 +1,30 @@
+============================================================
+FLOOD INUNDATION PHYSICAL VALIDATION REPORT
+============================================================
+
+SECTION 1: DEM DATA
+[PASS] DEM shape is 100x100 - shape=(100, 100)
+[PASS] DEM minimum is within expected range - min=30.00 m
+[PASS] DEM maximum is within expected range - max=80.00 m
+
+SECTION 2: EDGE CASES
+[PASS] No flooding below minimum elevation - flooded=0.0%
+[PASS] Depth is zero below minimum elevation - max_depth=0.000 m
+[PASS] Full flooding above maximum elevation - flooded=100.0%
+[PASS] Maximum depth matches water level minus minimum elevation - max_depth=51.000 m
+
+SECTION 3: WATER LEVEL SWEEP
+[PASS] Flooded percentage stays within 0-100%
+[PASS] Flooded percentage is non-decreasing
+[PASS] Maximum depth is non-decreasing
+[PASS] Flood volume is non-decreasing
+
+SECTION 4: REPRESENTATIVE LEVELS
+- 40 m: flooded=8.83%, cells=883, max_depth=10.00 m, volume=2839739.19 m3
+- 45 m: flooded=19.12%, cells=1912, max_depth=15.00 m, volume=8975915.38 m3
+- 50 m: flooded=33.80%, cells=3380, max_depth=20.00 m, volume=20732110.75 m3
+
+============================================================
+SUMMARY: 11/11 checks passed
+PHYSICAL VALIDITY: CONFIRMED
+============================================================
